@@ -1,15 +1,16 @@
 using System;
+using System.Buffers.Text;
 using System.IO;
 
-var data = String.Empty;
+byte[]? data = null;
 
 try {
-    data = File.ReadAllText("rounds.txt", System.Text.Encoding.UTF8);
+    data = File.ReadAllBytes("rounds.txt");
 } catch (IOException err) {
     Console.WriteLine($"Couldn't read file:\n {err.Message}");
 }
 
-int rounds = int.Parse(data);
+_ = Utf8Parser.TryParse(data, out int rounds, out _);
 
 double pi = 1;
 double x = 1;
