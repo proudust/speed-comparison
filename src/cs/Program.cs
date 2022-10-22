@@ -2,13 +2,7 @@ using System;
 using System.Buffers.Text;
 using System.IO;
 
-byte[]? data = null;
-
-try {
-    data = File.ReadAllBytes("rounds.txt");
-} catch (IOException err) {
-    Console.WriteLine($"Couldn't read file:\n {err.Message}");
-}
+byte[] data = Read();
 
 _ = Utf8Parser.TryParse(data, out int rounds, out _);
 
@@ -22,3 +16,14 @@ for (int i = 2; i < rounds + 2; i++) {
 
 pi *= 4;
 Console.WriteLine(pi);
+
+static byte[] Read()
+{
+    try {
+        return File.ReadAllBytes("rounds.txt");
+    } catch (IOException err) {
+        Console.WriteLine($"Couldn't read file:\n {err.Message}");
+        Environment.Exit(1);
+        return null; // unreachable
+    }
+}
